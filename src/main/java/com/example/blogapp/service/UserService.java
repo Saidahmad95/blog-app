@@ -26,9 +26,8 @@ public class UserService {
 		return ResponseEntity.status(HttpStatus.CREATED).body(userRepository.save(newUser));
 	}
 
-	public ResponseEntity<User> getUserByUserId(Long userId) throws UserPrincipalNotFoundException  {
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new UserPrincipalNotFoundException(String.format("String with user id : %d not found!",userId)));
+	public ResponseEntity<User> getUserByUserId(Long userId) {
+		User user = userRepository.findById(userId).orElse(null);
 		return ResponseEntity.status(HttpStatus.OK).body(user);
 	}
 

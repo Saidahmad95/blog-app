@@ -37,7 +37,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
-	public ResponseEntity<User> getUserByUserId(@PathVariable Long userId) throws  UserPrincipalNotFoundException {
+	public ResponseEntity<User> getUserByUserId(@PathVariable Long userId)  {
 		return userService.getUserByUserId(userId);
 	}
 

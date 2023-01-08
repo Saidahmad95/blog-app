@@ -30,8 +30,7 @@ public class PostService {
 	}
 
 	public ResponseEntity<Post> getPostByPostId(Long postId)   {
-	Post post = postRepository.findById(postId).orElse(
-			null);
+	Post post = postRepository.findById(postId).orElse(null);
 		return ResponseEntity.status(HttpStatus.OK).body(post);
 	}
 
@@ -49,8 +48,15 @@ public class PostService {
 	public ResponseEntity<Post> updatePostByPostId(Long postId, PostDto postDto) {
 		Post foundPost = getPostByPostId(postId).getBody();
 		if(foundPost!=null) {
-			foundPost.setText(postDto.getText());
-			foundPost.setTitle(postDto.getTitle());
+			if(postDto.getText()!=null){
+				foundPost.setText(postDto.getText());
+			}
+			if(postDto.getTitle()!=null) {
+				foundPost.setTitle(postDto.getTitle());
+			}
+
+			Post updatedPost = postRepository.save(foundPost);
+		 return ResponseEntity.status(HttpStatus.CREATED).body(updatedPost);
 		}
 		return null;
 	}
