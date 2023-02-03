@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.blogapp.dto.PostDto;
+import com.example.blogapp.dto.PostResponseDto;
 import com.example.blogapp.entities.Post;
 import com.example.blogapp.service.PostService;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -29,12 +31,12 @@ public class PostController {
 	private final PostService postService;
 
 	@GetMapping("/all")
-	public ResponseEntity<List<Post>> getAllPosts(@RequestParam Optional<Long> userId) {
+	public ResponseEntity<List<PostResponseDto>> getAllPosts(@RequestParam Optional<Long> userId) {
 		return postService.getAllPosts(userId);
 	}
 	
 	@PostMapping
-	public ResponseEntity<Post> createPost(@RequestBody PostDto newPost) throws UserPrincipalNotFoundException{
+	public ResponseEntity<Post> createPost(@Valid @RequestBody PostDto newPost) throws UserPrincipalNotFoundException{
 		return  postService.createPost(newPost);
 	}
 
