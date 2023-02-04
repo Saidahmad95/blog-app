@@ -9,7 +9,7 @@ import com.example.blogapp.entities.Like;
 
 public interface LikeRepository extends JpaRepository<Like, Long>{
  
-List<Like> findByUserIdAandPostId(Long userId,Long postId) ;
+List<Like> findByUserIdAndPostId(Long userId,Long postId) ;
 
  List<Like>  findByUserId(Long userId);
     

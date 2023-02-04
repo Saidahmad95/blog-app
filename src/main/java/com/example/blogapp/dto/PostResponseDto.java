@@ -2,6 +2,8 @@ package com.example.blogapp.dto;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
+
 import com.example.blogapp.entities.Like;
 import com.example.blogapp.entities.Post;
 
@@ -16,11 +18,12 @@ public class PostResponseDto {
 	private String text;
 	List<Like> postLikes;
 
-	public PostResponseDto(Post postEntity) {
+	public PostResponseDto(Post postEntity,List<Like> likes) {
 		this.id = postEntity.getId();
 		this.userId = postEntity.getUser().getId();
 		this.username = postEntity.getUser().getUsername();
 		this.title = postEntity.getTitle();
-		this.text = postEntity.getText();
+		this.text = postEntity.getText();	
+		this.postLikes=likes;
 	}
 }

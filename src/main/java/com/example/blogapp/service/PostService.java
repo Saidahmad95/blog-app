@@ -12,8 +12,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.blogapp.dto.PostDto;
 import com.example.blogapp.dto.PostResponseDto;
+import com.example.blogapp.entities.Like;
 import com.example.blogapp.entities.Post;
 import com.example.blogapp.entities.User;
+import com.example.blogapp.repositories.LikeRepository;
 import com.example.blogapp.repositories.PostRepository;
 
 import jakarta.validation.Valid;
@@ -25,6 +27,7 @@ public class PostService {
 
 	private final PostRepository postRepository;
 	private final UserService userService;
+	private final LikeService likeService;
 
 	public ResponseEntity<List<PostResponseDto>> getAllPosts(Optional<Long> userId) {
 		List<Post> list;
@@ -33,7 +36,11 @@ public class PostService {
 		} else {
 			list = postRepository.findAll();
 		}
-		List<PostResponseDto> mappedList = list.stream().map(post -> new PostResponseDto(post)).collect(Collectors.toList());
+		List<PostResponseDto> mappedList = list.stream().map(post -> {
+			ResponseEntity<List<Like>> likes = likeService.getAllLikesWithParam(null,
+					Optional.of(post.getId()));
+			return new PostResponseDto(post, likes.getBody());
+		}).collect(Collectors.toList());
 		return ResponseEntity.status(HttpStatus.OK).body(mappedList);
 	}
 

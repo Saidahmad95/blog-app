@@ -2,7 +2,9 @@ package com.example.blogapp.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,7 +17,6 @@ import com.example.blogapp.repositories.LikeRepository;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
 @Service
 public class LikeService {
 
@@ -23,11 +24,19 @@ public class LikeService {
     private final UserService userService;
     private final PostService postService;
 
-    public ResponseEntity<List<Like>> getAllLikesWithParam(
+    public LikeService(LikeRepository likeRepository,
+            UserService userService,
+            @Lazy PostService postService) {
+        this.likeRepository = likeRepository;
+        this.userService = userService;
+        this.postService = postService;
+    }
+
+    public ResponseEntity<List<LikeDto>> getAllLikesWithParam(
             Optional<Long> userId, Optional<Long> postId) {
         List<Like> list;
         if (userId.isPresent() && postId.isPresent()) {
-            list = likeRepository.findByUserIdAandPostId(userId.get(), postId.get());
+            list = likeRepository.findByUserIdAndPostId(userId.get(), postId.get());
         } else if (userId.isPresent()) {
             list = likeRepository.findByUserId(userId.get());
         } else if (postId.isPresent()) {
@@ -35,7 +44,8 @@ public class LikeService {
         } else {
             list = likeRepository.findAll();
         }
-        return ResponseEntity.ok(list);
+        List<LikeDto> collect = list.stream().map(like-> new LikeDto(like)).collect(Collectors.toList());
+        return ResponseEntity.ok(collect);
     }
 
     public ResponseEntity<Like> createLike(LikeDto likeDto) {
