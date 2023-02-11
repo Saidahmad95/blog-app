@@ -27,7 +27,7 @@ public class LikeController {
     private final LikeService likeService;
 
     @GetMapping
-    public ResponseEntity<List<Like>> getAllLikes(
+    public ResponseEntity<List<LikeDto>> getAllLikes(
             @RequestParam Optional<Long> userId,
             @RequestParam Optional<Long> postId) {
 

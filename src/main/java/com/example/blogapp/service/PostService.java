@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.example.blogapp.dto.LikeDto;
 import com.example.blogapp.dto.PostDto;
 import com.example.blogapp.dto.PostResponseDto;
 import com.example.blogapp.entities.Like;
@@ -37,7 +38,7 @@ public class PostService {
 			list = postRepository.findAll();
 		}
 		List<PostResponseDto> mappedList = list.stream().map(post -> {
-			ResponseEntity<List<Like>> likes = likeService.getAllLikesWithParam(null,
+ResponseEntity<List<LikeDto>> likes = likeService.getAllLikesWithParam(Optional.ofNullable(null),
 					Optional.of(post.getId()));
 			return new PostResponseDto(post, likes.getBody());
 		}).collect(Collectors.toList());

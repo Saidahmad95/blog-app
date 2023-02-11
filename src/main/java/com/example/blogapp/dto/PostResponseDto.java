@@ -16,9 +16,9 @@ public class PostResponseDto {
 	private String username;
 	private String title;
 	private String text;
-	List<Like> postLikes;
+	List<LikeDto> postLikes;
 
-	public PostResponseDto(Post postEntity,List<Like> likes) {
+	public PostResponseDto(Post postEntity,List<LikeDto> likes) {
 		this.id = postEntity.getId();
 		this.userId = postEntity.getUser().getId();
 		this.username = postEntity.getUser().getUsername();
